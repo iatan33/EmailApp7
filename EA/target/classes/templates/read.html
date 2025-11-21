@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${mail.subject}">Перегляд листа</title>
+</head>
+<body>
+<h1 th:text="${mail.subject}">Тема</h1>
+
+<p><strong>Від:</strong> <span th:text="${mail.sender}"></span></p>
+<p><strong>До:</strong> <span th:text="${mail.receiver}"></span></p>
+<p><strong>Дата:</strong> <span th:text="${#temporals.format(mail.createdAt, 'dd-MM-yyyy HH:mm')}"></span></p>
+<hr/>
+
+<div style="white-space: pre-wrap;" th:text="${mail.body}">Текст листа</div>
+<hr/>
+
+<p><a th:href="@{/home}">Повернутися на головну</a></p>
+</body>
+</html>

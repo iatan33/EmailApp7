@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Домашня сторінка</title>
+</head>
+<body>
+<h1>Вітаємо!</h1>
+
+<div th:if="${message}" style="color: green;" th:text="${message}"></div>
+<div th:if="${error}" style="color: red;" th:text="${error}"></div>
+
+<p>Ви успішно увійшли як: <strong sec:authentication="name"></strong></p>
+
+<h2>Папки</h2>
+<p><a th:href="@{/mail/inbox}">Вхідні</a></p>
+<p><a th:href="@{/mail/sent}">Відправлені</a></p>
+<p><a th:href="@{/mail/drafts}">Чернетки</a></p>
+
+<p><a th:href="@{/mail/new}">Створити новий лист</a></p>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Вийти</button>
+</form>
+</body>
+</html>

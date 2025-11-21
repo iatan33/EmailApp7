@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${folderName}">Поштова Скринька</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .mail-link { text-decoration: none; color: inherit; display: block; }
+        tr:hover { background-color: #f5f5f5; cursor: pointer; }
+    </style>
+</head>
+<body>
+<h1 th:text="${folderName}">Папка</h1>
+
+<p><a th:href="@{/home}">Повернутися на головну</a> | <a th:href="@{/mail/new}">Створити новий лист</a></p>
+
+<div th:if="${mails.isEmpty()}">
+    <p th:text="'У папці &quot;' + ${folderName} + '&quot; немає листів.'">У папці немає листів.</p>
+</div>
+
+<div th:unless="${mails.isEmpty()}">
+    <table>
+        <thead>
+        <tr>
+            <th th:text="${folderType == 'inbox' ? 'Відправник' : 'Отримувач'}">Контрагент</th>
+            <th>Тема</th>
+            <th>Дата</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="mail : ${mails}">
+            <td th:if="${folderType == 'inbox'}" th:onclick="|window.location.href='@{/mail/{id}(id=${mail.id})}'|" th:text="${mail.sender}"></td>
+            <td th:if="${folderType == 'sent'}" th:onclick="|window.location.href='@{/mail/{id}(id=${mail.id})}'|" th:text="${mail.receiver}"></td>
+            <td th:if="${folderType == 'drafts'}" th:onclick="|window.location.href='@{/mail/drafts/{id}(id=${mail.id})}'|" th:text="${mail.receiver}"></td>
+
+            <td th:if="${folderType == 'drafts'}">
+                <a th:href="@{'/mail/drafts/' + ${mail.id}}" class="mail-link" th:text="${mail.subject}"></a>
+            </td>
+            <td th:if="${folderType == 'sent' or folderType == 'inbox'}">
+                <a th:href="@{'/mail/' + ${mail.id}}" class="mail-link" th:text="${mail.subject}"></a>
+            </td>
+
+            <td><span th:text="${#temporals.format(mail.createdAt, 'dd-MM-yyyy HH:mm')}">Дата</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

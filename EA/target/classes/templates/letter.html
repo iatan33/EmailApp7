@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${mail.id == 0 ? 'Новий лист' : 'Редагувати чернетку'}">Email</title>
+</head>
+<body>
+<h1 th:text="${mail.id == 0 ? 'Створення нового листа' : 'Редагування чернетки'}">Новий лист</h1>
+
+<div th:if="${message}" style="color: green;" th:text="${message}"></div>
+<div th:if="${error}" style="color: red;" th:text="${error}"></div>
+
+<form th:action="@{/mail/saveDraft}" th:object="${mail}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{sender}" />
+
+    <div>
+        <label>Відправник:</label>
+        <input type="text" th:value="*{sender}" readonly/>
+    </div>
+
+    <div>
+        <label for="receiver">Отримувач:</label>
+        <input type="email" id="receiver" th:field="*{receiver}" required/>
+    </div>
+
+    <div>
+        <label for="subject">Тема листа:</label>
+        <input type="text" id="subject" th:field="*{subject}"/>
+    </div>
+
+    <div>
+        <label for="body">Текст листа:</label>
+        <textarea id="body" th:field="*{body}" rows="10" cols="50"></textarea>
+    </div>
+
+    <div>
+        <button type="submit">Зберегти як чернетку</button>
+
+        <button type="submit" formaction="/mail/send" formmethod="post">Відправити</button>
+    </div>
+</form>
+
+<p><a href="/home">Повернутися на головну</a></p>
+</body>
+</html>
